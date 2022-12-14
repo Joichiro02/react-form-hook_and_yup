@@ -5,9 +5,16 @@ import TextFields from '../components/TextFields';
 import SelectFields from '../components/SelectFields';
 import CheckBoxFields from '../components/CheckBoxFields';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+//create schema validation
+const schema = yup.object({
+    fullName: yup.string().required("Full Name is Required")
+})
 
 const RegisterForm = () => {
-    const { handleSubmit, control } = useForm({
+    const { handleSubmit, formState: { errors }, control } = useForm({
         defaultValues: {
             fullName: "",
             email: "",
@@ -16,7 +23,8 @@ const RegisterForm = () => {
             password: "",
             confirmPassword: "",
             privary: false
-        }
+        },
+        resolver: yupResolver(schema)
     });
 
     const onSubmit = (data: any) => {
